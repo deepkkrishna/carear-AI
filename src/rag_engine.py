@@ -26,8 +26,11 @@ def get_llm(model: str = "llama-3.1-8b-instant", temperature: float = 0.2):
     return ChatGroq(model=model, temperature=temperature)
 
 
-def get_embeddings():
-    return HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+
+embeddings = GoogleGenerativeAIEmbeddings(
+    model="models/embedding-001"
+)
 
 
 # -----------------------------
