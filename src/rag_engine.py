@@ -11,7 +11,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_groq import ChatGroq
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_chroma import Chroma
 
 load_dotenv()
@@ -26,7 +26,7 @@ def get_llm(model: str = "llama-3.1-8b-instant", temperature: float = 0.2):
     return ChatGroq(model=model, temperature=temperature)
 
 
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
+
 
 embeddings = GoogleGenerativeAIEmbeddings(
     model="models/embedding-001"
