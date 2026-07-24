@@ -33,9 +33,6 @@ embeddings = GoogleGenerativeAIEmbeddings(
 )
 
 
-# -----------------------------
-# Stage 1: Load Documents
-# -----------------------------
 def load_text_file(file_path: str, source_name: str, doc_type: str) -> List[Document]:
     path = Path(file_path)
     text = path.read_text(encoding="utf-8", errors="ignore")
@@ -49,9 +46,6 @@ def create_documents(resume_text: str, jd_text: str) -> List[Document]:
     ]
 
 
-# -----------------------------
-# Stage 2: Split Documents
-# -----------------------------
 def split_documents(docs: List[Document], chunk_size: int = 800, chunk_overlap: int = 150) -> List[Document]:
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,
@@ -61,9 +55,6 @@ def split_documents(docs: List[Document], chunk_size: int = 800, chunk_overlap: 
     return splitter.split_documents(docs)
 
 
-# -----------------------------
-# Stage 3 + 4: Embeddings + Vector DB
-# -----------------------------
 def build_vectorstore(chunks: List[Document], persist_directory: str = DB_DIR):
     if Path(persist_directory).exists():
         shutil.rmtree(persist_directory)
@@ -77,9 +68,7 @@ def build_vectorstore(chunks: List[Document], persist_directory: str = DB_DIR):
     return vectorstore
 
 
-# -----------------------------
-# Stage 5: Retrieve Context
-# -----------------------------
+
 def retrieve_context(vectorstore, query: str, k: int = 5) -> Tuple[str, List[Document]]:
     retriever = vectorstore.as_retriever(search_kwargs={"k": k})
     docs = retriever.invoke(query)
@@ -87,9 +76,6 @@ def retrieve_context(vectorstore, query: str, k: int = 5) -> Tuple[str, List[Doc
     return context, docs
 
 
-# -----------------------------
-# Stage 6: Generate Answer
-# -----------------------------
 def run_career_coach(vectorstore, resume_text: str, jd_text: str, question: str):
     llm = get_llm()
 
